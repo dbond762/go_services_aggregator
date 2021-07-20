@@ -1,0 +1,32 @@
+.page {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+}
+.page__data {
+    display: flex;
+}
+.page__menu {
+    width: 200px;
+    background: azure;
+}
+.page__content {
+    flex-grow: 1;
+    background: coral;
+}
+.header {
+    height: 40px;
+    background: aquamarine;
+    display: flex;
+}
+.header__logo {
+    width: 200px;
+}
+.header__content {
+    display: flex;
+    justify-content: space-between;
+    flex-grow: 1;
+}
+.header__block {
+    display: flex;
+}

@@ -55,3 +55,63 @@ func (t tickets) Clear() error {
 
 	return err
 }
+
+func (t tickets) GetListByUserID(userID int64) (tickets []models.Ticket, err error) {
+	query := fmt.Sprintf(
+		`SELECT id,
+			    id_user,
+				name,
+				type,
+				project,
+				caption,
+				status,
+				priority,
+				assignee,
+				creator
+		FROM %s
+		WHERE id_user = ?`,
+		tableTickets,
+	)
+
+	rows, err := t.db.Query(query, userID)
+	if err != nil {
+		return
+	}
+
+	for rows.Next() {
+		var (
+			id         int64
+			userID     int64
+			name       string
+			ticketType string
+			project    string
+			caption    string
+			status     string
+			priority   string
+			assignee   string
+			creator    string
+		)
+
+		err = rows.Scan(&id, &userID, &name, &ticketType, &project, &caption, &status, &priority, &assignee, &creator)
+		if err != nil {
+			return
+		}
+
+		ticket := models.Ticket{
+			ID:       id,
+			UserID:   userID,
+			Name:     name,
+			Type:     ticketType,
+			Project:  project,
+			Caption:  caption,
+			Status:   status,
+			Priority: priority,
+			Assignee: assignee,
+			Creator:  creator,
+		}
+
+		tickets = append(tickets, ticket)
+	}
+
+	return
+}

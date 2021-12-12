@@ -1,3 +1,37 @@
 {{ define "content" }}
-Hello, {{ .Username }}
+<h2>Tickets</h2>
+{{ if not . }}
+    <p>Tickets not found</p>
+{{ else }}
+    <table class="table">
+        <thead>
+            <tr>
+                <th class="table__cell">ID</th>
+                <th class="table__cell">Name</th>
+                <th class="table__cell">Type</th>
+                <th class="table__cell">Project</th>
+                <th class="table__cell">Caption</th>
+                <th class="table__cell">Status</th>
+                <th class="table__cell">Priority</th>
+                <th class="table__cell">Assignee</th>
+                <th class="table__cell">Creator</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{ range . }}
+                <tr>
+                    <td class="table__cell">{{ .ID }}</td>
+                    <td class="table__cell">{{ .Name }}</td>
+                    <td class="table__cell">{{ .Type }}</td>
+                    <td class="table__cell">{{ .Project }}</td>
+                    <td class="table__cell">{{ .Caption }}</td>
+                    <td class="table__cell">{{ .Status }}</td>
+                    <td class="table__cell">{{ .Priority }}</td>
+                    <td class="table__cell">{{ .Assignee }}</td>
+                    <td class="table__cell">{{ .Creator }}</td>
+                </tr>
+            {{ end }}
+        </tbody>
+    </table>
+{{ end }}
 {{ end }}

@@ -24,7 +24,7 @@ func NewSettings(db *sql.DB) objects.Settings {
 func (s settings) GetAll() (results []models.Setting, err error) {
 	query := fmt.Sprintf(
 		"SELECT %[1]s.id, %[1]s.id_user, %[1]s.service, %[2]s.type "+
-			"FROM %[1]s"+
+			"FROM %[1]s "+
 			"INNER JOIN %[2]s ON %[1]s.service = %[2]s.ident",
 		tableSettings,
 		tableServices,

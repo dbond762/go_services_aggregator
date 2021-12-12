@@ -7,7 +7,7 @@ import (
 	"github.com/dbond762/go_services_aggregator/src/plugins/settings/objects"
 )
 
-const tableCredentials = "credentials"
+const tableCredentials = "`credentials`"
 
 type credentials struct {
 	db *sql.DB
@@ -18,7 +18,7 @@ func NewCredentials(db *sql.DB) objects.Credentials {
 }
 
 func (c credentials) GetAll() (results map[int64][]models.Credential, err error) {
-	query := "SELECT id_setting, key, value FROM " + tableCredentials
+	query := "SELECT `id_setting`, `key`, `value` FROM " + tableCredentials
 
 	rows, err := c.db.Query(query)
 	if err != nil {

@@ -10,7 +10,7 @@ type Config struct {
 func getConfig() *Config {
 	var (
 		addr = flag.String("addr", ":8080", "")
-		dsn  = flag.String("dsn", "root:123456@/devs_services_aggregator", "")
+		dsn  = flag.String("dsn", "root:123456@/services_aggregator", "")
 	)
 
 	return &Config{

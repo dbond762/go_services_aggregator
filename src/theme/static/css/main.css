@@ -8,11 +8,12 @@
 }
 .page__menu {
     width: 200px;
-    background: azure;
+    background: rgb(168, 199, 199);
+    padding: 10px;
 }
 .page__content {
     flex-grow: 1;
-    background: coral;
+    padding: 20px;
 }
 .header {
     height: 40px;
@@ -29,4 +30,14 @@
 }
 .header__block {
     display: flex;
+}
+
+.table {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+.table__cell {
+    border: 1px solid black;
+    padding: 10px;
 }

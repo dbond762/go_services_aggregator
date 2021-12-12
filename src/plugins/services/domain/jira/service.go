@@ -29,7 +29,7 @@ type Service struct {
 	client *http.Client
 }
 
-func (s Service) Init(userID int64, credentials map[string]string) error {
+func (s *Service) Init(userID int64, credentials map[string]string) error {
 	s.userID = userID
 
 	availableKeys := s.CredentialsKeys()

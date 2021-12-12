@@ -16,8 +16,9 @@ type Theme struct {
 func NewTheme(title string) *Theme {
 	return &Theme{
 		data: models.App{
-			Title: title,
-			Menu:  make([]models.MenuItem, 0),
+			Title:   title,
+			Menu:    make([]models.MenuItem, 0),
+			Content: nil,
 		},
 	}
 }

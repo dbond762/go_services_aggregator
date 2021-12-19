@@ -9,8 +9,8 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/dbond762/go_services_aggregator/src/plugins/services/domain/jira/response"
-	"github.com/dbond762/go_services_aggregator/src/plugins/services/models"
+	"github.com/dbond762/go_services_aggregator/src/plugins/services/domain"
+	"github.com/dbond762/go_services_aggregator/src/plugins/services/domain/models"
 )
 
 const (
@@ -19,8 +19,14 @@ const (
 	tokenCredentialKey  = "token"
 )
 
-type Service struct {
-	userID int64
+func init() {
+	domain.RegisterService("jira", func() (domain.Service, error) {
+		return new(jiraService), nil
+	})
+}
+
+type jiraService struct {
+	userServiceID int64
 
 	domain string
 	email  string
@@ -29,19 +35,19 @@ type Service struct {
 	client *http.Client
 }
 
-func (s *Service) Init(userID int64, credentials map[string]string) error {
-	s.userID = userID
+func (s *jiraService) Init(service models.Service) error {
+	s.userServiceID = service.UserServiceID
 
 	availableKeys := s.CredentialsKeys()
 	for _, key := range availableKeys {
-		if _, ok := credentials[key]; !ok {
+		if _, ok := service.Credentials[key]; !ok {
 			return fmt.Errorf("not found %s credential", key)
 		}
 	}
 
-	s.domain = credentials[domainCredentialKey]
-	s.email = credentials[emailCredentialKey]
-	s.token = credentials[tokenCredentialKey]
+	s.domain = service.Credentials[domainCredentialKey]
+	s.email = service.Credentials[emailCredentialKey]
+	s.token = service.Credentials[tokenCredentialKey]
 
 	s.client = &http.Client{
 		Transport: &http.Transport{
@@ -54,10 +60,10 @@ func (s *Service) Init(userID int64, credentials map[string]string) error {
 	return nil
 }
 
-func (s Service) Finalize() {
+func (s jiraService) Finalize() {
 }
 
-func (s Service) CredentialsKeys() []string {
+func (s jiraService) CredentialsKeys() []string {
 	return []string{
 		domainCredentialKey,
 		emailCredentialKey,
@@ -65,11 +71,7 @@ func (s Service) CredentialsKeys() []string {
 	}
 }
 
-func (s Service) Ident() string {
-	return "Jira"
-}
-
-func (s Service) SearchAll() ([]models.Ticket, error) {
+func (s jiraService) GetAllTickets() ([]models.Ticket, error) {
 	tickets := make([]models.Ticket, 0)
 
 	startAt := 0
@@ -84,15 +86,15 @@ func (s Service) SearchAll() ([]models.Ticket, error) {
 
 		for idx, issue := range res.Issues {
 			ticket := models.Ticket{
-				UserID:   s.userID,
-				Name:     issue.Key,
-				Type:     issue.Fields.IssueType.Name,
-				Project:  issue.Fields.Project.Name,
-				Caption:  issue.Fields.Summary,
-				Status:   issue.Fields.Status.Name,
-				Priority: issue.Fields.Priority.Name,
-				Assignee: issue.Fields.Assignee.DisplayName,
-				Creator:  issue.Fields.Reporter.DisplayName,
+				UserServiceID: s.userServiceID,
+				Name:          issue.Key,
+				Type:          issue.Fields.IssueType.Name,
+				Project:       issue.Fields.Project.Name,
+				Caption:       issue.Fields.Summary,
+				Status:        issue.Fields.Status.Name,
+				Priority:      issue.Fields.Priority.Name,
+				Assignee:      issue.Fields.Assignee.DisplayName,
+				Creator:       issue.Fields.Reporter.DisplayName,
 			}
 
 			resultTickets[idx] = ticket
@@ -110,8 +112,8 @@ func (s Service) SearchAll() ([]models.Ticket, error) {
 	return tickets, nil
 }
 
-func (s Service) search(startAt int) (result response.Search, err error) {
-	req, err := http.NewRequest(http.MethodGet, s.url(startAt), nil)
+func (s jiraService) search(startAt int) (result Search, err error) {
+	req, err := http.NewRequest(http.MethodGet, s.getUrl(startAt), nil)
 	if err != nil {
 		return
 	}
@@ -137,7 +139,7 @@ func (s Service) search(startAt int) (result response.Search, err error) {
 	return
 }
 
-func (s Service) url(startAt int) string {
+func (s jiraService) getUrl(startAt int) string {
 	params := url.Values{}
 	params.Set("startAt", strconv.Itoa(startAt))
 

@@ -9,17 +9,16 @@ import (
 	"github.com/dbond762/go_services_aggregator/src/libs/messages"
 	"github.com/dbond762/go_services_aggregator/src/libs/session"
 	"github.com/dbond762/go_services_aggregator/src/plugins/users/objects"
-	"github.com/dbond762/go_services_aggregator/src/plugins/users/storage"
 )
 
 type Handler struct {
-	userObject objects.Users
+	userObject objects.UsersObject
 	session    *session.Manager
 }
 
 func NewHandler(db *sql.DB, session *session.Manager) *Handler {
 	return &Handler{
-		userObject: storage.NewUserObject(db),
+		userObject: objects.NewUserObject(db),
 		session:    session,
 	}
 }

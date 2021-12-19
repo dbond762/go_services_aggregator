@@ -7,20 +7,19 @@ import (
 
 	"github.com/dbond762/go_services_aggregator/src/libs/session"
 	"github.com/dbond762/go_services_aggregator/src/plugins/services/objects"
-	"github.com/dbond762/go_services_aggregator/src/plugins/services/storage"
 	usersModels "github.com/dbond762/go_services_aggregator/src/plugins/users/models"
 	"github.com/dbond762/go_services_aggregator/src/theme"
 )
 
 type Handler struct {
-	ticketsObject objects.Tickets
+	ticketsObject objects.TicketsObject
 	theme         *theme.Theme
 	session       *session.Manager
 }
 
 func NewHandler(theme *theme.Theme, session *session.Manager, db *sql.DB) *Handler {
 	return &Handler{
-		ticketsObject: storage.NewTickets(db),
+		ticketsObject: objects.NewTicketsObject(db),
 		theme:         theme,
 		session:       session,
 	}

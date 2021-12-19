@@ -6,7 +6,6 @@ import (
 	"net/http"
 
 	_ "github.com/dbond762/go_services_aggregator/src/libs/session/providers/memory"
-	// "github.com/dbond762/go_services_aggregator/tools"
 	_ "github.com/go-sql-driver/mysql"
 )
 
@@ -16,10 +15,13 @@ func main() {
 		log.Fatal(err)
 	}
 
-	initRoutes(container)
-	// initCronServices(container)
+	if err := initRoutes(container); err != nil {
+		log.Fatal(err)
+	}
 
-	// tools.CreateUser(db, "admin", []byte("123456"))
+	if err := initCronServices(container); err != nil {
+		log.Fatal(err)
+	}
 
 	if err := container.Invoke(runServer); err != nil {
 		log.Fatal(err)

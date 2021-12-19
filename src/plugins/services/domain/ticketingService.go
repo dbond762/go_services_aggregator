@@ -1,11 +1,10 @@
 package domain
 
 import (
-	"github.com/dbond762/go_services_aggregator/src/plugins/services/models"
+	"github.com/dbond762/go_services_aggregator/src/plugins/services/domain/models"
 )
 
 type TicketingService interface {
 	Service
-
-	SearchAll() ([]models.Ticket, error)
+	GetAllTickets() ([]models.Ticket, error)
 }

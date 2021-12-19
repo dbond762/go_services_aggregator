@@ -7,7 +7,7 @@ import (
 
 var db *sql.DB
 
-func dbConnection(conf *Config) (*sql.DB, error) {
+func getDBConnection(conf *Config) (*sql.DB, error) {
 	if db != nil {
 		return db, nil
 	}

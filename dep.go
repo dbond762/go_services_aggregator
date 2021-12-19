@@ -11,7 +11,7 @@ func newContainer() (*dig.Container, error) {
 		return nil, err
 	}
 
-	if err := container.Provide(dbConnection); err != nil {
+	if err := container.Provide(getDBConnection); err != nil {
 		return nil, err
 	}
 

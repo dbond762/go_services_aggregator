@@ -9,7 +9,6 @@ func newTheme() *theme.Theme {
 	t.Init()
 
 	t.AddMenuItem("/ticketing/", "Ticketing", 10)
-	t.AddMenuItem("/settings/", "Settings", 10)
 
 	return t
 }

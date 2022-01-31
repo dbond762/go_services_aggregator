@@ -1,6 +1,11 @@
 package main
 
-import "flag"
+import (
+	"log"
+	"os"
+
+	"github.com/joho/godotenv"
+)
 
 type Config struct {
 	Address string
@@ -8,13 +13,12 @@ type Config struct {
 }
 
 func getConfig() *Config {
-	var (
-		addr = flag.String("addr", ":8080", "")
-		dsn  = flag.String("dsn", "root:123456@/services_aggregator", "")
-	)
+	if err := godotenv.Load(); err != nil {
+		log.Fatal("Error loading .env file")
+	}
 
 	return &Config{
-		Address: *addr,
-		DSN:     *dsn,
+		Address: os.Getenv("ADDR"),
+		DSN:     os.Getenv("DB_DSN"),
 	}
 }

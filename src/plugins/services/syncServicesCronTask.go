@@ -35,6 +35,10 @@ func (task SyncServicesCronTask) Execute() {
 		panic(err)
 	}
 
+	if err := task.ticketsObject.Clear(); err != nil {
+		panic(err)
+	}
+
 	for _, service := range services {
 		if err := task.executeService(service); err != nil {
 			panic(err)
